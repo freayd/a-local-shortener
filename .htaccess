@@ -1,9 +1,12 @@
 # Shortening service
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteRule ^_shortener/?$ / [L]
-    RewriteRule ^([a-z0-9]{4})$ /_shortener/$1 [L]
+    RewriteRule ^([a-z0-9]{4})$ /shortener.php [L]
 </IfModule>
+<Files "random.rb">
+  Order Allow,Deny
+  Deny from all
+</Files>
 
 # Test
 <IfModule mod_rewrite.c>
