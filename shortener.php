@@ -1,4 +1,20 @@
 <?php
+/**
+ * This file is part of A Local Shortener.
+ *
+ * A Local Shortener is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public License
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
+ *
+ * A Local Shortener is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with A Local Shortener. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 $short_url = @$_SERVER['REQUEST_URI'];
 if (! isset($short_url) || ! is_string($short_url) || ! @preg_match('@^/[a-z0-9]{4}$@', $short_url)) {
