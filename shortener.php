@@ -42,7 +42,22 @@ if (is_string($short_url) && is_array($config) && array_key_exists('redirect-to'
 
     // TODO Redirect to an bsolute URI as required by HTTP/1.1
     // TODO Validate URL with filter_var()
-    $header = 'Location: '.$config['redirect-to'];
+    $uri = $config['redirect-to'];
+
+    $host = @$_SERVER['HTTP_HOST'];
+    if (isset($host) && is_string($host)) {
+        $https = @$_SERVER['HTTPS'];
+        $protocol = isset($https) && is_string($https)
+                                  && $https != ''
+                                  && $https != 'off'
+                                  ? 'https'
+                                  : 'http';
+        if (@parse_url("$protocol://$host$uri") !== false) {
+            $uri = "$protocol://$host$uri";
+        }
+    }
+
+    $header = "Location: $uri";
     if (array_key_exists('redirect-status', $config) && is_string($config['redirect-status'])
                                                      && @preg_match('@^[1-5]\d{2}$@', $config['redirect-status'])) {
         @header($header, true, intval($config['redirect-status']));
