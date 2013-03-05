@@ -7,7 +7,11 @@ if (! isset($short_url) || ! is_string($short_url) || ! @preg_match('@^/[a-z0-9]
 
 $config = @parse_ini_file(@dirname(__FILE__).'/shortener.ini', true);
 if (isset($config) && is_array($config) && array_key_exists($short_url, $config)) {
-    $config = $config[$short_url];
+    if (array_key_exists('global', $config)) {
+        $config = array_merge($config['global'], $config[$short_url]);
+    } else {
+        $config = $config[$short_url];
+    }
 } else {
     $config = null;
 }
