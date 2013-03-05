@@ -3,6 +3,10 @@
         "redirect-status": 307
     },
     "/aaaa": {
+        "set-cookies": {
+            "a-cookie": "Coookie set from A Local Shortener",
+            "another-cookie": "This cookie was set by the shortening service"
+        },
         "redirect-to": "/a-long-url"
     },
     "/bbbb": {

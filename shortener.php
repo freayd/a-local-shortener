@@ -35,8 +35,15 @@ if (isset($config) && is_array($config) && array_key_exists($short_url, $config)
 if (is_string($short_url) && is_array($config) && array_key_exists('redirect-to', $config)
                                                && is_string($config['redirect-to'])
                                                && @preg_match('@^/@', $config['redirect-to'])) {
-    $uri = $config['redirect-to'];
+    // Set cookies
+    if (array_key_exists('set-cookies', $config) && is_array($config['set-cookies'])) {
+        foreach ($config['set-cookies'] as $name => $value) {
+            setcookie($name, $value);
+        }
+    }
 
+    // Redirect
+    $uri = $config['redirect-to'];
     $host = @$_SERVER['HTTP_HOST'];
     if (isset($host) && is_string($host)) {
         $https = @$_SERVER['HTTPS'];
@@ -49,7 +56,6 @@ if (is_string($short_url) && is_array($config) && array_key_exists('redirect-to'
             $uri = "$protocol://$host$uri";
         }
     }
-
     $header = "Location: $uri";
     if (array_key_exists('redirect-status', $config) && is_int($config['redirect-status'])
                                                      && $config['redirect-status'] >= 100
@@ -58,6 +64,7 @@ if (is_string($short_url) && is_array($config) && array_key_exists('redirect-to'
     } else {
         @header($header);
     }
+
     @exit;
 }
 
