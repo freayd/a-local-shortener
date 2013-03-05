@@ -6,6 +6,6 @@
         <title>Index</title>
     </head>
     <body>
-        <h1><?php echo $_SERVER['REQUEST_URI']; ?></h1>
+        <h1>Index: <?php echo $_SERVER['REQUEST_URI']; ?></h1>
     </body>
 </html>
