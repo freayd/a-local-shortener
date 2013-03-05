@@ -54,12 +54,10 @@ if (is_string($short_url) && is_array($config) && array_key_exists('redirect-to'
 // 'redirect-to' not defined in config file
 
 if (@file_exists(@dirname(__FILE__).'/index.php')) {
-    unset($short_url);
-    unset($config);
+    unset($short_url, $config);
     @require_once @dirname(__FILE__).'/index.php';
 } else if (@file_exists('index.php')) {
-    unset($short_url);
-    unset($config);
+    unset($short_url, $config);
     @require_once 'index.php';
 } else {
     // No index found, display 404 message
