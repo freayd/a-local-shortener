@@ -21,7 +21,7 @@ if (! isset($short_url) || ! is_string($short_url) || ! @preg_match('@^/[a-z0-9]
     $short_url = null;
 }
 
-$config = @parse_ini_file(@dirname(__FILE__).'/shortener.ini', true);
+$config = @json_decode(@file_get_contents(@dirname(__FILE__).'/shortener-config.json'), true);
 if (isset($config) && is_array($config) && array_key_exists($short_url, $config)) {
     if (array_key_exists('global', $config)) {
         $config = array_merge($config['global'], $config[$short_url]);
@@ -51,9 +51,10 @@ if (is_string($short_url) && is_array($config) && array_key_exists('redirect-to'
     }
 
     $header = "Location: $uri";
-    if (array_key_exists('redirect-status', $config) && is_string($config['redirect-status'])
-                                                     && @preg_match('@^[1-5]\d{2}$@', $config['redirect-status'])) {
-        @header($header, true, intval($config['redirect-status']));
+    if (array_key_exists('redirect-status', $config) && is_int($config['redirect-status'])
+                                                     && $config['redirect-status'] >= 100
+                                                     && $config['redirect-status'] <= 599) {
+        @header($header, true, $config['redirect-status']);
     } else {
         @header($header);
     }

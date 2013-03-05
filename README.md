@@ -7,7 +7,7 @@ Local shortening service
 Requirements
 ============
 
-* [PHP >= 5](http://www.php.net/)
+* [PHP >= 5.2](http://www.php.net/)
 * [Ruby >= 1.8](http://www.ruby-lang.org/)
 
 License
