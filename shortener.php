@@ -16,44 +16,43 @@ if (isset($config) && is_array($config) && array_key_exists($short_url, $config)
     $config = null;
 }
 
-if (! is_null($short_url) && ! is_null($config)) {
-    // Config found for current URL
-
+if (is_string($short_url) && is_array($config) && array_key_exists('redirect-to', $config)) {
     echo '<h2>Config found:</h2>';
     echo '<pre>';
     var_dump($config);
     echo '</pre>';
 
+    // TODO Redirect here
+    @exit;
+}
+
+// 'redirect-to' not defined in config file
+
+if (@file_exists(@dirname(__FILE__).'/index.php')) {
+    unset($short_url);
+    unset($config);
+    @require_once @dirname(__FILE__).'/index.php';
+} else if (@file_exists('index.php')) {
+    unset($short_url);
+    unset($config);
+    @require_once 'index.php';
 } else {
-    // URL not defined in config file
+    // No index found, display 404 message
 
-    if (@file_exists(@dirname(__FILE__).'/index.php')) {
-        unset($short_url);
-        unset($config);
-        @require_once @dirname(__FILE__).'/index.php';
-    } else if (@file_exists('index.php')) {
-        unset($short_url);
-        unset($config);
-        @require_once 'index.php';
-    } else {
-        // No index found, display 404 message
+    $protocol = @$_SERVER['SERVER_PROTOCOL'];
+    if (! isset($protocol) || ! is_string($protocol) || ! @preg_match('@^HTTPS?/\d(\.\d)?$@i', $protocol)) {
+        $protocol = 'HTTP/1.0';
+    }
 
-        $protocol = @$_SERVER['SERVER_PROTOCOL'];
-        if (! isset($protocol) || ! is_string($protocol) || ! @preg_match('@^HTTPS?/\d(\.\d)?$@i', $protocol)) {
-            $protocol = 'HTTP/1.0';
-        }
-
-        header("$protocol 404 Not Found");
+    header("$protocol 404 Not Found");
 
 ?><!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
 <html><head>
 <title>404 Not Found</title>
 </head><body>
 <h1>Not Found</h1>
-<p>The requested URL <?php echo isset($short_url) && is_string($short_url) ? "$short_url " : ''; ?>was not found on this server.</p>
+<p>The requested URL <?php echo is_string($short_url) ? "$short_url " : ''; ?>was not found on this server.</p>
 </body></html>
 <?php
-        @exit;
-    }
-
+    @exit;
 }
