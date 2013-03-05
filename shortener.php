@@ -40,8 +40,6 @@ if (is_string($short_url) && is_array($config) && array_key_exists('redirect-to'
     var_dump($config);
     echo '</pre>';
 
-    // TODO Redirect to an bsolute URI as required by HTTP/1.1
-    // TODO Validate URL with filter_var()
     $uri = $config['redirect-to'];
 
     $host = @$_SERVER['HTTP_HOST'];
