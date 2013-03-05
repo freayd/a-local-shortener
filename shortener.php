@@ -17,20 +17,16 @@
  */
 
 $short_url = @$_SERVER['REQUEST_URI'];
-if (! isset($short_url) || ! is_string($short_url) || ! @preg_match('@^/[a-z0-9]{4}$@', $short_url)) {
+if (! isset($short_url) || ! is_string($short_url) || ! @preg_match('@^/[a-z0-9]{4}$@', $short_url))
     $short_url = null;
-}
 
 $config = @json_decode(@file_get_contents(@dirname(__FILE__).'/shortener-config.json'), true);
-if (isset($config) && is_array($config) && array_key_exists($short_url, $config)) {
-    if (array_key_exists('global', $config)) {
-        $config = array_merge($config['global'], $config[$short_url]);
-    } else {
-        $config = $config[$short_url];
-    }
-} else {
+if (isset($config) && is_array($config) && array_key_exists($short_url, $config))
+    $config = array_key_exists('global', $config)
+            ? array_merge($config['global'], $config[$short_url])
+            : $config[$short_url];
+else
     $config = null;
-}
 
 if (is_string($short_url) && is_array($config) && array_key_exists('redirect-to', $config)
                                                && is_string($config['redirect-to'])
@@ -66,18 +62,16 @@ if (is_string($short_url) && is_array($config) && array_key_exists('redirect-to'
                                   && $https != 'off'
                                   ? 'https'
                                   : 'http';
-        if (@parse_url("$protocol://$host$uri") !== false) {
+        if (@parse_url("$protocol://$host$uri") !== false)
             $uri = "$protocol://$host$uri";
-        }
     }
     $header = "Location: $uri";
     if (array_key_exists('redirect-status', $config) && is_int($config['redirect-status'])
                                                      && $config['redirect-status'] >= 100
-                                                     && $config['redirect-status'] <= 599) {
+                                                     && $config['redirect-status'] <= 599)
         @header($header, true, $config['redirect-status']);
-    } else {
+    else
         @header($header);
-    }
 
     @exit;
 }
@@ -94,9 +88,8 @@ if (@file_exists(@dirname(__FILE__).'/index.php')) {
     // No index found, display 404 message
 
     $protocol = @$_SERVER['SERVER_PROTOCOL'];
-    if (! isset($protocol) || ! is_string($protocol) || ! @preg_match('@^HTTPS?/\d(\.\d)?$@i', $protocol)) {
+    if (! isset($protocol) || ! is_string($protocol) || ! @preg_match('@^HTTPS?/\d(\.\d)?$@i', $protocol))
         $protocol = 'HTTP/1.0';
-    }
 
     @header("$protocol 404 Not Found");
 
