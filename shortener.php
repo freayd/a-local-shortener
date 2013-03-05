@@ -35,11 +35,6 @@ if (isset($config) && is_array($config) && array_key_exists($short_url, $config)
 if (is_string($short_url) && is_array($config) && array_key_exists('redirect-to', $config)
                                                && is_string($config['redirect-to'])
                                                && @preg_match('@^/@', $config['redirect-to'])) {
-    echo '<h2>Config found:</h2>';
-    echo '<pre>';
-    var_dump($config);
-    echo '</pre>';
-
     $uri = $config['redirect-to'];
 
     $host = @$_SERVER['HTTP_HOST'];
