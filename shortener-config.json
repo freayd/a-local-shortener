@@ -1,5 +1,11 @@
 {
     "global": {
+        "cookie-config": {
+            "expire": 1800,
+            "expire-from-now": true,
+            "path": "/",
+            "domain": ".${HTTP_HOST}"
+        },
         "redirect-status": 307
     },
     "/aaaa": {
