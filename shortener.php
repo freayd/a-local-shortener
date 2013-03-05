@@ -69,7 +69,7 @@ if (@file_exists(@dirname(__FILE__).'/index.php')) {
         $protocol = 'HTTP/1.0';
     }
 
-    header("$protocol 404 Not Found");
+    @header("$protocol 404 Not Found");
 
 ?><!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
 <html><head>
