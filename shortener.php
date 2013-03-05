@@ -16,13 +16,22 @@ if (isset($config) && is_array($config) && array_key_exists($short_url, $config)
     $config = null;
 }
 
-if (is_string($short_url) && is_array($config) && array_key_exists('redirect-to', $config)) {
+if (is_string($short_url) && is_array($config) && array_key_exists('redirect-to', $config)
+                                               && is_string($config['redirect-to'])) {
     echo '<h2>Config found:</h2>';
     echo '<pre>';
     var_dump($config);
     echo '</pre>';
 
-    // TODO Redirect here
+    // TODO Redirect to an bsolute URI as required by HTTP/1.1
+    // TODO Validate URL with filter_var()
+    $header = 'Location: '.$config['redirect-to'];
+    if (array_key_exists('redirect-status', $config) && is_string($config['redirect-status'])
+                                                     && @preg_match('@^[1-5]\d{2}$@', $config['redirect-status'])) {
+        @header($header, true, intval($config['redirect-status']));
+    } else {
+        @header($header);
+    }
     @exit;
 }
 
