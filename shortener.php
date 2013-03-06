@@ -51,9 +51,9 @@ if (isset($config) && is_array($config) && array_key_exists($short_url, $config)
     $config = null;
 }
 
-if (is_string($short_url) && is_array($config) && array_key_exists('redirect-to', $config)
-                                               && is_string($config['redirect-to'])
-                                               && @preg_match('@^/@', $config['redirect-to'])) {
+if (is_array($config) && array_key_exists('redirect-to', $config)
+                      && is_string($config['redirect-to'])
+                      && @preg_match('@^/@', $config['redirect-to'])) {
     // Set cookies
     if (array_key_exists('set-cookies', $config) && is_array($config['set-cookies'])) {
         $cookie_config = array_key_exists('cookie-config', $config)
