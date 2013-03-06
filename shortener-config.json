@@ -9,10 +9,23 @@
         "redirect-status": 307
     },
     "/aaaa": {
-        "set-cookies": {
-            "a-cookie": "Coookie set from A Local Shortener",
-            "another-cookie": "This cookie was set by the shortening service"
-        },
+        "set-cookies": [
+            {
+                "name": "a-cookie",
+                "value": "Coookie set from A Local Shortener",
+                "expire": 3600
+            },
+            {
+                "name": "another-cookie",
+                "value": "This cookie was set by the shortening service"
+            },
+            {
+                "name": "a-third-cookie",
+                "value": "Will expire at the end of the session",
+                "expire": 0,
+                "expire-from-now": false
+            }
+        ],
         "redirect-to": "/a-long-url"
     },
     "/bbbb": {

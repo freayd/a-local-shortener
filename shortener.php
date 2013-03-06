@@ -33,23 +33,37 @@ if (is_string($short_url) && is_array($config) && array_key_exists('redirect-to'
                                                && @preg_match('@^/@', $config['redirect-to'])) {
     // Set cookies
     if (array_key_exists('set-cookies', $config) && is_array($config['set-cookies'])) {
-        $cookie_expire = 0;
-        $cookie_path = null;
-        $cookie_domain = null;
-        if (array_key_exists('cookie-config', $config) && is_array($config['cookie-config'])) {
-            if (array_key_exists('expire', $config['cookie-config']) && is_int($config['cookie-config']['expire'])) {
-                $cookie_expire_from = 0;
-                if (array_key_exists('expire-from-now', $config['cookie-config']) && $config['cookie-config']['expire-from-now'] === true)
-                    $cookie_expire_from = time();
-                $cookie_expire = $cookie_expire_from + $config['cookie-config']['expire'];
+        $cookie_config = array_key_exists('cookie-config', $config)
+                       ? $config['cookie-config']
+                       : null;
+        foreach ($config['set-cookies'] as $cookie) {
+            if (is_array($cookie_config))
+                $cookie = array_merge($cookie_config, $cookie);
+
+            $cookie_value = array_key_exists('value', $cookie)
+                         && is_string($cookie['value'])
+                          ? $cookie['value']
+                          : null;
+            $cookie_expire = 0;
+            if (array_key_exists('expire', $cookie) && is_int($cookie['expire'])) {
+                $cookie_expire_from = array_key_exists('expire-from-now', $cookie)
+                                   && $cookie['expire-from-now'] === true
+                                    ? time()
+                                    : 0;
+                $cookie_expire = $cookie_expire_from + $cookie['expire'];
             }
-            if (array_key_exists('path', $config['cookie-config']) && is_string($config['cookie-config']['path']))
-                $cookie_path = $config['cookie-config']['path'];
-            if (array_key_exists('domain', $config['cookie-config']) && is_string($config['cookie-config']['domain']))
-                $cookie_domain = str_replace('${HTTP_HOST}', @$_SERVER['HTTP_HOST'], $config['cookie-config']['domain']);
+            $cookie_path = array_key_exists('path', $cookie)
+                        && is_string($cookie['path'])
+                         ? $cookie['path']
+                         : null;
+            $cookie_domain = array_key_exists('domain', $cookie)
+                          && is_string($cookie['domain'])
+                           ? str_replace('${HTTP_HOST}', @$_SERVER['HTTP_HOST'], $cookie['domain'])
+                           : null;
+
+            if (array_key_exists('name', $cookie) && is_string($cookie['name']))
+                @setcookie($cookie['name'], $cookie_value, $cookie_expire, $cookie_path, $cookie_domain);
         }
-        foreach ($config['set-cookies'] as $cookie_name => $cookie_value)
-            @setcookie($cookie_name, $cookie_value, $cookie_expire, $cookie_path, $cookie_domain);
     }
 
     // Redirect
