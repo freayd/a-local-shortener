@@ -16,6 +16,9 @@
  * License along with A Local Shortener. If not, see <http://www.gnu.org/licenses/>.
  */
 
+// TODO Include everything in a class and remove the unset calls (so variables can't be passed to required scripts)
+// TODO Create a function that verify the configuration, and print all the errors to a config file
+
 $short_url = @$_SERVER['REQUEST_URI'];
 if (! isset($short_url) || ! is_string($short_url) || ! @preg_match('@^/[a-z0-9]{4}$@', $short_url))
     $short_url = null;
