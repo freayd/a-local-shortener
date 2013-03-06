@@ -61,7 +61,7 @@ if (is_array($config) && array_key_exists('redirect-to', $config)
                        : null;
         foreach ($config['set-cookies'] as $cookie) {
             if (is_array($cookie_config))
-                $cookie = array_merge($cookie_config, $cookie);
+                $cookie = @array_merge($cookie_config, $cookie);
 
             if (array_key_exists('set-if', $cookie) && $cookie['set-if'] === 'empty-referrer') {
                 if (array_key_exists('HTTP_REFERER', $_SERVER) && ! empty($_SERVER['HTTP_REFERER']))
