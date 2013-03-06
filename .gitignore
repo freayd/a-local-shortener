@@ -1,5 +1,7 @@
 # https://help.github.com/articles/ignoring-files
 
+*.bak*
+
 # Windows #
 ###########
 Thumbs.db
