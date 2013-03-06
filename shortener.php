@@ -16,6 +16,7 @@
  * License along with A Local Shortener. If not, see <http://www.gnu.org/licenses/>.
  */
 
+// TODO Change 'import' to 'merge' and add 'import' option to import JSON data from other files
 // TODO Include everything in a class and remove the unset calls (so variables can't be passed to required scripts)
 // TODO Create a function that verify the configuration, and print all the errors to a config file
 
