@@ -3,10 +3,10 @@
     RewriteEngine On
     RewriteRule ^([a-z0-9]{4})$ /shortener.php [L]
 </IfModule>
-<Files "random.rb">
+<FilesMatch "^(shortener-config\.json|random\.rb)$">
   Order Allow,Deny
   Deny from all
-</Files>
+</FilesMatch>
 
 # Test
 <IfModule mod_rewrite.c>
