@@ -24,6 +24,11 @@
                 "value": "Will expire at the end of the session",
                 "expire": 0,
                 "expire-from-now": false
+            },
+            {
+                "set-if": "empty-referrer",
+                "name": "the-lost-referrer",
+                "value": "http://www.the-referrer-on-which-you-publish-the-link.com/the/path"
             }
         ],
         "redirect-to": "/a-long-url"

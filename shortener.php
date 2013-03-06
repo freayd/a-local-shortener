@@ -40,6 +40,11 @@ if (is_string($short_url) && is_array($config) && array_key_exists('redirect-to'
             if (is_array($cookie_config))
                 $cookie = array_merge($cookie_config, $cookie);
 
+            if (array_key_exists('set-if', $cookie) && $cookie['set-if'] === 'empty-referrer') {
+                if (array_key_exists('HTTP_REFERER', $_SERVER) && ! empty($_SERVER['HTTP_REFERER']))
+                    continue;
+            }
+
             $cookie_value = array_key_exists('value', $cookie)
                          && is_string($cookie['value'])
                           ? $cookie['value']
