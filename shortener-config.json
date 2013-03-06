@@ -38,6 +38,6 @@
         "redirect-to": "/another-long-url"
     },
     "/cccc": {
-        "dont-redirect-to": "/impossible"
+        "rdirect-to": "/misspelled/options/are/ignored"
     }
 }
