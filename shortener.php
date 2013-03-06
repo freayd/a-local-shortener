@@ -21,12 +21,35 @@ if (! isset($short_url) || ! is_string($short_url) || ! @preg_match('@^/[a-z0-9]
     $short_url = null;
 
 $config = @json_decode(@file_get_contents(@dirname(__FILE__).'/shortener-config.json'), true);
-if (isset($config) && is_array($config) && array_key_exists($short_url, $config))
-    $config = array_key_exists('global', $config)
-            ? array_merge($config['global'], $config[$short_url])
-            : $config[$short_url];
-else
+if (isset($config) && is_array($config) && array_key_exists($short_url, $config)) {
+    $final_config = $config[$short_url];
+
+    // Import configurations (global is always imported)
+    $imports = array('global');
+    if (array_key_exists('import', $config[$short_url]) && is_array($config[$short_url]['import']))
+        $imports = @array_unique(@array_merge($imports, $config[$short_url]['import']));
+    foreach (@array_reverse($imports) as $import) {
+        if (is_string($import) && is_array($config[$import])) {
+            // Merge set-cookies
+            if (array_key_exists('set-cookies', $config[$import]) && is_array($config[$import]['set-cookies'])) {
+                if (array_key_exists('set-cookies', $final_config) && is_array($final_config['set-cookies'])) {
+                    $final_config['set-cookies'] = @array_merge($config[$import]['set-cookies'], $final_config['set-cookies']);
+                    unset($config[$import]['set-cookies']);
+                }
+            }
+
+            // Then merge everything else
+            $final_config = @array_merge($config[$import], $final_config);
+        }
+    }
+
+    $config = $final_config;
+    unset($import);
+    unset($imports);
+    unset($final_config);
+} else {
     $config = null;
+}
 
 if (is_string($short_url) && is_array($config) && array_key_exists('redirect-to', $config)
                                                && is_string($config['redirect-to'])

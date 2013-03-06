@@ -8,7 +8,18 @@
         },
         "redirect-status": 307
     },
+    "a-and-b": {
+        "set-cookies": [
+            {
+                "name": "a-group-cookie",
+                "value": "Coookie set from 'a-and-b' group"
+            }
+        ]
+    },
     "/aaaa": {
+        "import": [
+            "a-and-b"
+        ],
         "set-cookies": [
             {
                 "name": "a-cookie",
@@ -34,10 +45,16 @@
         "redirect-to": "/a-long-url"
     },
     "/bbbb": {
+        "import": [
+            "a-and-b"
+        ],
         "redirect-status": 303,
         "redirect-to": "/another-long-url"
     },
     "/cccc": {
+        "redirect-to": "/a-third-url"
+    },
+    "/dddd": {
         "rdirect-to": "/misspelled/options/are/ignored"
     }
 }
